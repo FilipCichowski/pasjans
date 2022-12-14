@@ -28,6 +28,7 @@ int main() {
         if (d.is_ace_of_spades_in_right_down_corner()) {
             if (d.is_board_valid()) {
                 cards.emplace_back(d.get_cards());
+                d.make_all_cards_visible();
                 for (auto &e: cards) {
                     log_deck(width, height, e);
                 }

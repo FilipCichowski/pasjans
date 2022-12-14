@@ -61,3 +61,11 @@ bool Deck::is_board_valid() {
 std::vector<std::vector<Card>> Deck::get_cards() {
     return cards;
 }
+
+void Deck::make_all_cards_visible() {
+    for (auto &e: cards) {
+        for (auto &f: e) {
+            f.is_hidden = true;
+        }
+    }
+}

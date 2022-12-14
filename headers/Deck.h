@@ -19,6 +19,8 @@ public:
 
     void swap_hand_with_expected_pos();
 
+    void make_all_cards_visible();
+
     bool is_ace_of_spades_in_right_down_corner();
 
     bool is_board_valid();
