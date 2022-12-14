@@ -8,16 +8,16 @@
 class Deck {
 private:
     std::uint8_t width, height;
-    std::vector<std::vector<std::uint8_t>> cards;
-
+    std::vector<std::vector<Card>> cards;
 
 public:
+    std::vector<std::vector<Card>> get_cards();
 
     void init();
 
     Deck(std::uint8_t width, std::uint8_t height);
 
-    std::vector<std::uint8_t> get_row(uint8_t index);
+    std::vector<Card> get_row(uint8_t index);
 
     void swap_hand_with_expected_pos();
 

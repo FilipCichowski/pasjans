@@ -10,7 +10,7 @@ Deck::Deck(std::uint8_t width, std::uint8_t height) : width(width), height(heigh
 void Deck::init() {
     std::random_device rd;
     std::mt19937 g(rd());
-    std::vector<std::uint8_t> temp;
+    std::vector<Card> temp;
     temp.resize(width * height);
 
     cards.resize(width); // allocate 4 columns
@@ -21,7 +21,7 @@ void Deck::init() {
 
     // fill 1D vector with values for further shuffling
     for (std::uint8_t i = 0; i < width * height; i++) {
-        temp[i] = i;
+        temp[i].id = i;
     }
 
     std::shuffle(temp.begin(), temp.end(), g);
@@ -34,8 +34,8 @@ void Deck::init() {
     }
 }
 
-std::vector<std::uint8_t> Deck::get_row(uint8_t index) {
-    std::vector<std::uint8_t> temp;
+std::vector<Card> Deck::get_row(uint8_t index) {
+    std::vector<Card> temp;
     temp.resize(width);
     for (int8_t i = 0; i < width; i++) {
         temp[i] = cards[i][index];
@@ -46,8 +46,14 @@ std::vector<std::uint8_t> Deck::get_row(uint8_t index) {
 void Deck::log_cards() {
     for (std::uint8_t i = 0; i < height; i++) {
         for (auto &el: this->get_row(i)) {
+//            std::cout << static_cast<int>(el.id) << " " << el.is_hidden << "\n";
+
             std::cout << std::left << std::setw(4);
-            std::cout << static_cast<int>(el);
+            if (el.is_hidden) {
+                std::cout << "XX";
+            } else {
+                std::cout << static_cast<int>(el.id);
+            }
         }
         std::cout << "\n";
     }
@@ -55,25 +61,36 @@ void Deck::log_cards() {
 }
 
 void Deck::swap_hand_with_expected_pos() {
-    const std::uint8_t hand_card_value = cards[width - 1][height - 1];
+    const std::uint8_t hand_card_value = cards[width - 1][height - 1].id;
     const std::uint8_t expected_x = hand_card_value % width;
     const std::uint8_t expected_y = (hand_card_value - expected_x) / width;
+
+
+    cards[width - 1][height - 1].is_hidden = false;
+    cards[expected_x][expected_y].is_hidden = false;
+    //cards[0][0].is_hidden = false;
+
     std::swap(cards[width - 1][height - 1], cards[expected_x][expected_y]);
+
 }
 
 bool Deck::is_ace_of_spades_in_right_down_corner() {
-    return cards[width - 1][height - 1] == (width * height - 1);
+    return cards[width - 1][height - 1].id == (width * height - 1);
 }
 
 bool Deck::is_board_valid() {
     bool is_valid = true;
     for (std::uint8_t i = 0; i < height; i++) {
         for (std::uint8_t j = 0; j < width; j++) {
-            if (cards[j][i] != (j + i * width)) {
+            if (cards[j][i].id != (j + i * width)) {
                 is_valid = false;
                 break;
             }
         }
     }
     return is_valid;
+}
+
+std::vector<std::vector<Card>> Deck::get_cards() {
+    return cards;
 }
