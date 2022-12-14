@@ -4,8 +4,10 @@
 #include <cstdint>
 
 struct Card {
-    std::uint8_t id;
+    std::uint8_t id = 0;
     bool is_hidden = true;
 };
 
-#endif //UNTITLED_STRUCTS_H
+typedef std::vector<std::vector<Card>> CardDeck;
+
+#endif

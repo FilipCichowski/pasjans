@@ -3,4 +3,4 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(untitled main.cpp src/Card.cpp headers/Card.h headers/Enums.h src/Deck.cpp headers/Deck.h headers/Structs.h)
+add_executable(untitled main.cpp src/Deck.cpp headers/Deck.h headers/Structs.h)

@@ -1,9 +1,8 @@
 #include <iostream>
 #include <iomanip>
-
 #include "headers/deck.h"
 
-void log_deck(std::uint8_t width, std::uint8_t height, std::vector<std::vector<Card>> &cards) {
+void log_deck(std::uint8_t width, std::uint8_t height, CardDeck &cards) {
     for (std::uint8_t i = 0; i < height; i++) {
         for (std::uint8_t j = 0; j < width; j++) {
             std::cout << std::left << std::setw(4);
@@ -19,26 +18,25 @@ void log_deck(std::uint8_t width, std::uint8_t height, std::vector<std::vector<C
 }
 
 int main() {
-    std::vector<std::vector<std::vector<Card>>> cards;
-    Deck d(4, 6);
-    //d.log_cards();
+    std::uint8_t width = 4;
+    std::uint8_t height = 6;
+    std::vector<CardDeck> cards;
+    Deck d(width, height);
     while (1) {
+        cards.emplace_back(d.get_cards());
         d.swap_hand_with_expected_pos();
-        cards.push_back(d.get_cards());
-//        d.log_cards();
         if (d.is_ace_of_spades_in_right_down_corner()) {
             if (d.is_board_valid()) {
-                std::cout << "Win! \n";
+                cards.emplace_back(d.get_cards());
                 for (auto &e: cards) {
-                    log_deck(4, 6, e);
+                    log_deck(width, height, e);
                 }
-                cards.clear();
                 break;
             } else {
                 d.init();
-                std::cout << "Looose! Starting new game... \n";
                 cards.clear();
             }
         }
     }
+    return 0;
 }
